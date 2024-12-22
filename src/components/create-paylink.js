@@ -4,35 +4,36 @@ import { styled } from '@mui/material/styles';
 import ReceiptIcon from '@mui/icons-material/Receipt';
 import QrCodeScannerIcon from '@mui/icons-material/QrCodeScanner';
 import Web3 from 'web3'
+import { networks } from '../common';
 
 const Demo = styled('div')(({ theme }) => ({
     backgroundColor: theme.palette.background.paper,
 }));
   
 
-const networks = [
-    {
-        name: 'celo',
-        rpc: 'alfajores-forno.celo-testnet.org',
-        chainId: '0xAEF3',
-        currency: 'CELO',
-        chainIdDecimal: 44787,
-    },
-    {
-        name: 'Binance',
-        rpc: 'bsc-testnet.drpc.org',
-        chainId: '0x61',
-        currency: 'tBNB',
-        chainIdDecimal: 97,
-    },
-    {
-        name: 'Arbitrum',
-        rpc: 'bsc-testnet.drpc.org',
-        chainId: '0xA4BA',
-        currency: 'ETH',
-        chainIdDecimal: 42170,
-    }
-]
+// const networks = [
+//     {
+//         name: 'celo',
+//         rpc: 'alfajores-forno.celo-testnet.org',
+//         chainId: '0xAEF3',
+//         currency: 'CELO',
+//         chainIdDecimal: 44787,
+//     },
+//     {
+//         name: 'Binance',
+//         rpc: 'bsc-testnet.drpc.org',
+//         chainId: '0x61',
+//         currency: 'tBNB',
+//         chainIdDecimal: 97,
+//     },
+//     {
+//         name: 'Arbitrum',
+//         rpc: 'bsc-testnet.drpc.org',
+//         chainId: '0xA4BA',
+//         currency: 'ETH',
+//         chainIdDecimal: 42170,
+//     }
+// ]
 
 function CreatePaylink(props) {
     const { networkId, setNetworkId, walletAddress } = props;
@@ -119,14 +120,19 @@ function CreatePaylink(props) {
     const pay = async (paylink) => {
         const switchNetworkResult = await switchNetwork(paylink.network);
         if (switchNetworkResult) {
-            const web3 = new Web3(window.ethereum)
-            const amountToSend = web3.utils.toWei("0.01", "ether");
-            const txHash = await web3.eth.sendTransaction({
-                from: walletAddress,
-                to: paylink.receiver,
-                value: amountToSend,
-            });
-            alert('Payment sent', txHash);
+            try {
+
+                const web3 = new Web3(window.ethereum)
+                const amountToSend = web3.utils.toWei("0.01", "ether");
+                const txHash = await web3.eth.sendTransaction({
+                    from: walletAddress,
+                    to: paylink.receiver,
+                    value: amountToSend,
+                });
+                alert('Payment sent', txHash);
+            } catch {
+                alert('Failed to send payment');
+            }
         }
         else {
             alert('Failed to switch network');

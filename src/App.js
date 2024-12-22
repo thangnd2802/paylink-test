@@ -6,6 +6,9 @@ import * as React from 'react';
 import { Button, Typography } from '@mui/material';
 import CreatePaylink from './components/create-paylink';
 import PropTypes from 'prop-types';
+import { networks  } from "./common";
+import { ViewPaylink } from './components/view-paylink';
+// import { useSearchParams } from 'react-router-dom';
 
 
 function TabPanel(props) {
@@ -34,14 +37,51 @@ TabPanel.propTypes = {
   value: PropTypes.number.isRequired,
 };
 
+const paylinks = [
+  {
+      id: 'abcd1',
+      title: 'Paylink 1',
+      amount: 0.01,
+      network : networks[0],
+      receiver: '0xa328E769b3fA4f18e94eB7F3Ca8782fA78fe6aAD'
+  },
+  {
+      id: 'abcd2',
+      title: 'Paylink 2',
+      amount: 0.02,
+      network : networks[1],
+      receiver: '0xa328E769b3fA4f18e94eB7F3Ca8782fA78fe6aAD'
+  },
+  {
+      id: 'abcd3',
+      title: 'Paylink 3',
+      amount: 0.03,
+      network : networks[2],
+      receiver: '0xa328E769b3fA4f18e94eB7F3Ca8782fA78fe6aAD'
+  },
+]
+
 function App() {
+
+
   const [value, setValue] = React.useState(0);
   const [isWalletConnected, setIsWalletConnected] = React.useState(false);
   const [walletAddress, setWalletAddress] = React.useState('');
   const [networkId, setNetworkId] = React.useState('');
+  const [ paylinkToView, setPaylinkToView ] = React.useState(null);
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+
+  React.useEffect(() => {
+    const queryParams = new URLSearchParams(window.location.search);
+    const paylinkId = queryParams.get("paylinkId");
+    const _paylinkToView = paylinks.find(x => x.id === paylinkId);
+    if (_paylinkToView) {
+      setPaylinkToView(_paylinkToView);
+    }
+
+  }, [])
 
   async function connectWallet() {
     if (window.ethereum) {
@@ -115,48 +155,57 @@ function App() {
 
   return (
     <div className="App">
-      <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', padding: '20px' }}>
-        <Typography variant="button" gutterBottom sx={{ display: 'block', fontSize: '1rem' }} >
-          Wallet:&nbsp;
-        </Typography>
-        <Typography variant="caption" gutterBottom sx={{ display: 'block', fontSize: '.875rem', lineHeight: '1.25rem', fontWeight: '600' }}>
-          {isWalletConnected ? walletAddress : 'Not Connected'}
-        </Typography>
-      </div>
-      <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', padding: '5px 0 20px 0' }}>
-        {
-          isWalletConnected ?
-          <Button variant="contained" disableElevation sx={{ marginLeft: '20px', bgcolor: 'grey' }} onClick={disconnectWallet}>
-            Disconnect
-          </Button>
-          :
-          <Button variant="contained" disableElevation sx={{ marginLeft: '20px' }} onClick={connectWallet}>
-            Connect Wallet
-          </Button>
-        }
-      </div>
-      { walletAddress || isWalletConnected ?
-        <Box sx={{ width: '100%' }}>
-          <Tabs
-            value={value}
-            onChange={handleChange}
-            textColor="secondary"
-            indicatorColor="secondary"
-            aria-label="secondary tabs example"
-          >
-            <Tab label="Create Paylink"  />
-            <Tab label="View Paylink" />
-            <Tab label="Item Three" />
-          </Tabs>
-          <TabPanel value={value} index={0}>
-            <CreatePaylink networkId={networkId} setNetworkId={setNetworkId} walletAddress={walletAddress} />
-          </TabPanel>
-        </Box>
+      {
+
+        paylinkToView ?
+        <ViewPaylink  paylinkToView={paylinkToView} setNetworkId={setNetworkId} networkId={networkId} walletAddress={walletAddress} connectWallet={connectWallet} />
+
         :
-        <Typography variant="caption" gutterBottom sx={{ display: 'block', fontSize: '1rem' }}>
-          Connect your wallet to create paylinks
-        </Typography>
-  }
+        <>
+          <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', padding: '20px' }}>
+            <Typography variant="button" gutterBottom sx={{ display: 'block', fontSize: '1rem' }} >
+              Wallet:&nbsp;
+            </Typography>
+            <Typography variant="caption" gutterBottom sx={{ display: 'block', fontSize: '.875rem', lineHeight: '1.25rem', fontWeight: '600' }}>
+              {isWalletConnected ? walletAddress : 'Not Connected'}
+            </Typography>
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', padding: '5px 0 20px 0' }}>
+            {
+              isWalletConnected ?
+              <Button variant="contained" disableElevation sx={{ marginLeft: '20px', bgcolor: 'grey' }} onClick={disconnectWallet}>
+                Disconnect
+              </Button>
+              :
+              <Button variant="contained" disableElevation sx={{ marginLeft: '20px' }} onClick={connectWallet}>
+                Connect Wallet
+              </Button>
+            }
+          </div>
+          { walletAddress || isWalletConnected ?
+            <Box sx={{ width: '100%' }}>
+              <Tabs
+                value={value}
+                onChange={handleChange}
+                textColor="secondary"
+                indicatorColor="secondary"
+                aria-label="secondary tabs example"
+              >
+                <Tab label="Create Paylink"  />
+                <Tab label="View Paylink" />
+                <Tab label="Item Three" />
+              </Tabs>
+              <TabPanel value={value} index={0}>
+                <CreatePaylink networkId={networkId} setNetworkId={setNetworkId} walletAddress={walletAddress} />
+              </TabPanel>
+            </Box>
+            :
+            <Typography variant="caption" gutterBottom sx={{ display: 'block', fontSize: '1rem' }}>
+              Connect your wallet to create paylinks
+            </Typography>
+          }
+        </>
+      }
     </div>
   );
 }

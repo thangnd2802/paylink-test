@@ -27,7 +27,7 @@ export function ViewPaylink(props) {
               chainId: network.chainId,
               chainName: network.name,
               nativeCurrency:  {
-                name: network.currency,
+                name: network.nameAdd,
                 symbol: network.currency,
                 decimals: 18
             },

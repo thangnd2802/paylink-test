@@ -5,6 +5,7 @@ export const networks = [
         chainId: '0xAEF3',
         currency: 'CELO',
         chainIdDecimal: 44787,
+        nameAdd: 'Alfajores Testnet',
     },
     {
         name: 'Binance',
@@ -12,6 +13,7 @@ export const networks = [
         chainId: '0x61',
         currency: 'tBNB',
         chainIdDecimal: 97,
+        nameAdd: 'BNB Chain',
     },
     {
         name: 'Arbitrum',
@@ -19,5 +21,6 @@ export const networks = [
         chainId: '0xA4BA',
         currency: 'ETH',
         chainIdDecimal: 42170,
+        nameAdd: 'Arbitrum Nova',
     }
 ]

@@ -26,7 +26,11 @@ export function ViewPaylink(props) {
             const addNetworkParam = {
               chainId: network.chainId,
               chainName: network.name,
-              nativeCurrency: network.currency,
+              nativeCurrency:  {
+                name: network.currency,
+                symbol: network.currency,
+                decimals: 18
+            },
               rpcUrls: [network.rpc],
             //   blockExplorerUrls: network.blockExplorersUrls.map(x => x.toString()),
             }

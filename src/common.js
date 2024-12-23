@@ -17,7 +17,7 @@ export const networks = [
     },
     {
         name: 'Arbitrum',
-        rpc: 'https://bsc-testnet.drpc.org',
+        rpc: 'https://nova.arbitrum.io/rpc',
         chainId: '0xA4BA',
         currency: 'ETH',
         chainIdDecimal: 42170,

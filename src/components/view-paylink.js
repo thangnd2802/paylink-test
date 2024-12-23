@@ -23,28 +23,34 @@ export function ViewPaylink(props) {
             if (switchError.code === 4902) {
               
               
-            const addNetworkParam = {
-              chainId: network.chainId,
-              chainName: network.nameAdd,
-              nativeCurrency:  {
-                name: network.currency,
-                symbol: network.currency,
-                decimals: 18
-            },
-              rpcUrls: [network.rpc],
-            //   blockExplorerUrls: network.blockExplorersUrls.map(x => x.toString()),
-            }
-                await window.ethereum.request({
-                  method: 'wallet_addEthereumChain',
-                  params: [addNetworkParam],
-                })
-                await window.ethereum.request({
-                  method: 'wallet_switchEthereumChain',
-                  params: [{ chainId: network.chainId }],
-                })
-                setNetworkId(network.chainId)
-                
-                return true
+                try {
+                    const addNetworkParam = {
+                    chainId: network.chainId,
+                    chainName: network.nameAdd,
+                    nativeCurrency:  {
+                        name: network.currency,
+                        symbol: network.currency,
+                        decimals: 18
+                    },
+                    rpcUrls: [network.rpc],
+                    //   blockExplorerUrls: network.blockExplorersUrls.map(x => x.toString()),
+                    }
+                        await window.ethereum.request({
+                        method: 'wallet_addEthereumChain',
+                        params: [addNetworkParam],
+                        })
+                        await window.ethereum.request({
+                        method: 'wallet_switchEthereumChain',
+                        params: [{ chainId: network.chainId }],
+                        })
+                        setNetworkId(network.chainId)
+                        
+                        return true
+                    }
+                    catch {
+                        alert('Failed to switch network');
+                        return false
+                    }
             }
             else {
               return false

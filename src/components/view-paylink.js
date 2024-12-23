@@ -25,9 +25,9 @@ export function ViewPaylink(props) {
               
             const addNetworkParam = {
               chainId: network.chainId,
-              chainName: network.name,
+              chainName: network.nameAdd,
               nativeCurrency:  {
-                name: network.nameAdd,
+                name: network.currency,
                 symbol: network.currency,
                 decimals: 18
             },

@@ -5,7 +5,7 @@ import Box from '@mui/material/Box';
 import * as React from 'react';
 import { Button, Typography } from '@mui/material';
 import CreatePaylink from './components/create-paylink';
-import PropTypes from 'prop-types';
+import PropTypes, { symbol } from 'prop-types';
 import { networks  } from "./common";
 import { ViewPaylink } from './components/view-paylink';
 // import { useSearchParams } from 'react-router-dom';
@@ -40,21 +40,34 @@ TabPanel.propTypes = {
 const paylinks = [
   {
       id: 'abcd1',
-      title: 'Paylink 1',
+      title: 'Paylink on celo native testnet token',
       amount: 0.01,
       network : networks[0],
       receiver: '0xa328E769b3fA4f18e94eB7F3Ca8782fA78fe6aAD'
   },
   {
       id: 'abcd2',
-      title: 'Paylink 2',
-      amount: 0.02,
+      title: 'Paylink on Binance (FAKE USDT) token',
+      amount: 100,
+      token: {
+        name: 'USDT',
+        symbol: 'FAKE USDT',
+        address: '0x1FBcAfe45387668c43dcFdff7579c5A66976694f',
+        decimals: 6
+      },
       network : networks[1],
       receiver: '0xa328E769b3fA4f18e94eB7F3Ca8782fA78fe6aAD'
   },
   {
-      id: 'abcd3',
-      title: 'Paylink 3',
+    id: 'abcd3',
+    title: 'Paylink on Binance native token',
+    amount: 0.02,
+    network : networks[1],
+    receiver: '0xa328E769b3fA4f18e94eB7F3Ca8782fA78fe6aAD'
+  },
+  {
+      id: 'abcd4',
+      title: 'Paylink on Arbitrum native token',
       amount: 0.03,
       network : networks[2],
       receiver: '0xa328E769b3fA4f18e94eB7F3Ca8782fA78fe6aAD'
